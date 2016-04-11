@@ -1,50 +1,57 @@
-function Piece(pieceName, img, currentPos, relativePos, relatedPieces) {
+function Piece(pieceName, img, currentPos, relativePos, neighbors) {
   this.pieceName = pieceName;
   this.img = img;
   this.currentPos = currentPos;
   this.relativePos = relativePos;
-  this.relatedPieces = relatedPieces;
+  this.neighbors = neighbors;
 }
 
-Piece.prototype.check = function() {
-  //this.relatedPieces.forEach(function(related) {
-    // console.log(this.relatedPieces[0].currentPos[0]);
-    // console.log(this.currentPos[0]);
-    //   console.log(this.relatedPieces[0].relativePos[0]);
-    //   console.log(this.relativePos[0]);
-    //   console.log("")
-    //check left coordinate
-    if (this.relatedPieces[0].currentPos[0] - this.currentPos[0] === this.relatedPieces[0].relativePos[0] - this.relativePos[0]) {
-      alert("Yeah!");
+Piece.prototype.checkPosition = function() {
+  for (var i = 0; i < this.neighbors.length; i++){
+    // check if position is within 20px of any neighbor
+    if (Math.abs((this.neighbors[i].currentPos[0] - this.currentPos[0]) - (this.neighbors[i].relativePos[0] - this.relativePos[0])) < 20
+  && Math.abs((this.neighbors[i].currentPos[1] - this.currentPos[1]) - (this.neighbors[i].relativePos[1] - this.relativePos[1])) < 20) {
+      // change position to sit alongside neighbor
+      this.currentPos[0] = this.neighbors[i].currentPos[0] + this.relativePos[0] - this.neighbors[i].relativePos[0];
+      this.currentPos[1] = this.neighbors[i].currentPos[1] + this.relativePos[1] - this.neighbors[i].relativePos[1];
     }
-  //});
+  }
 }
 
-
+// create new Piece objects
 var cat1 = new Piece("cat1", "cat1.jpg", [10,50], [0,0]);
-var cat2 = new Piece("cat2", "cat2.jpg", [270,0], [500,0]);
-cat1.relatedPieces = [cat2];
-cat2.relatedPieces = [cat1];
-var cats = [cat1, cat2];
+var cat2 = new Piece("cat2", "cat2.jpg", [270,54], [500,0]);
+var cat3 = new Piece("cat3", "cat1.jpg", [100,50], [0,600]);
+var cat4 = new Piece("cat4", "cat2.jpg", [70,34], [500,600]);
+
+// set object relations
+cat1.neighbors = [cat2, cat3];
+cat2.neighbors = [cat1, cat4];
+cat3.neighbors = [cat1, cat4];
+cat4.neighbors = [cat2, cat3];
+
+// set object of Piece objects
+var pieces = {cat1, cat2, cat3, cat4};
 
 
-//
 $(function() {
-  cats.forEach(function(cat) {
-    $("body").append("<img src='img/" + cat.img + "' class='piece' id='" + cat.pieceName + "'>");
-    $(".piece").last().css("left", cat.currentPos[0]);
-    $(".piece").last().css("top", cat.currentPos[1]);
-  });
+  // place images on load
+  for (var cat in pieces) {
+    $("body").append("<img src='img/" + pieces[cat].img + "' class='piece' id='" + pieces[cat].pieceName + "'>");
+    $(".piece").last().css("left", pieces[cat].currentPos[0]);
+    $(".piece").last().css("top", pieces[cat].currentPos[1]);
+  }
   $(".piece").draggable({
-    drag: function() {
-      cats.forEach(function(cat) {
-        console.log(cat.pieceName);
-        var left = parseInt($("#" + cat.pieceName).css("left"));
-        var top = parseInt($("#" + cat.pieceName).css("top"));
-        console.log([left, top]);
-        cat.currentPos = [left, top];
-        cat.check();
-      });
-      }
+    stop: function() {
+      var object = pieces[$(this).attr("id")];
+      object.currentPos = [parseInt($(this).css("left")), parseInt($(this).css("top"))];
+      
+      // check if images line up
+      object.checkPosition();
+
+      // move image in case of "snap"
+      $(this).css("left", object.currentPos[0]);
+      $(this).css("top", object.currentPos[1]);
+    }
   });
 });

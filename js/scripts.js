@@ -7,18 +7,17 @@ function Piece(pieceName, img, currentPos, relativePos, neighbors) {
 }
 
 Piece.prototype.checkPosition = function() {
-  
+
   for (var i in this.neighbors){
+    console.log(this.neighbors[i]);
     // check if position is within 20px of any neighbor
     if (Math.abs((this.neighbors[i].currentPos[0] - this.currentPos[0]) - (this.neighbors[i].relativePos[0] - this.relativePos[0])) < 100
   && Math.abs((this.neighbors[i].currentPos[1] - this.currentPos[1]) - (this.neighbors[i].relativePos[1] - this.relativePos[1])) < 100) {
       // change position to sit alongside neighbor
       this.currentPos[0] = this.neighbors[i].currentPos[0] + this.relativePos[0] - this.neighbors[i].relativePos[0];
       this.currentPos[1] = this.neighbors[i].currentPos[1] + this.relativePos[1] - this.neighbors[i].relativePos[1];
-
-      //adding return true for testing success.
-      return true;
-    } else { return false; }
+      console.log("success!");
+    }
   };
 }
 
@@ -45,7 +44,7 @@ $(function() {
         if (this.files && this.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
-                var randomBumber = Math.floor(Math.random() * (1000))
+                var randomBumber = Math.floor(Math.random() * (100000))
                 $("body").append("<img src=' "+ e.target.result +" ' class='new-piece' id='" + randomBumber + " ' />");
                 $(".new-piece").draggable();
             };
@@ -67,7 +66,7 @@ $(function() {
       var newPiece = new Piece(id, $(this).attr("src"), [0,0], [parseInt($(this).css("left")), parseInt($(this).css("top"))]);
       pieces[id] = newPiece;
       $(this).remove();
-    })
+    });
 
     //set neighbors
 
@@ -93,13 +92,10 @@ $(function() {
         object.currentPos = [parseInt($(this).css("left")), parseInt($(this).css("top"))];
 
         // check if images line up & move image
-        if (object.checkPosition()){
-
-          console.log("success!");
+          object.checkPosition();
 
           $(this).css("left", object.currentPos[0]);
           $(this).css("top", object.currentPos[1]);
-        };
       }
     });
 

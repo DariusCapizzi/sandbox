@@ -3,10 +3,11 @@ function Piece(pieceName, img, currentPos, relativePos, neighbors) {
   this.img = img;
   this.currentPos = currentPos;
   this.relativePos = relativePos;
-  this.neighbors = neighbors;
+  this.neighbors = {};
 }
 
 Piece.prototype.checkPosition = function() {
+  console.log(this)
   for (var i in this.neighbors){
     // check if position is within 20px of any neighbor
     if (Math.abs((this.neighbors[i].currentPos[0] - this.currentPos[0]) - (this.neighbors[i].relativePos[0] - this.relativePos[0])) < 100
@@ -21,32 +22,34 @@ Piece.prototype.checkPosition = function() {
   };
 }
 
-Piece.prototype.setNeighbors = function(pos1, pos2){
 
-
-
-}
 
 
 // // create new Piece objects
 // var cat1 = new Piece("cat1", "cat1.jpg", [10,50], [0,0]);
-// var cat2 = new Piece("cat2", "cat2.jpg", [270,54], [500,0]);
-// var cat3 = new Piece("cat3", "cat3.png", [100,50], [0,600]);
-// var cat4 = new Piece("cat4", "cat4.jpeg", [570,34], [500,600]);
-//
+
 // // set object relations
 // cat1.neighbors = {cat2, cat3};
-// cat2.neighbors = {cat1, cat4};
-// cat3.neighbors = {cat1, cat4};
-// cat4.neighbors = {cat2, cat3};
 
 // set object of Piece objects
 // var pieces = {cat1, cat2, cat3, cat4};
+
+
+
 var pieces = {};
 
 
 $(function() {
   //add user images to pieces
+  $(":file").change(function () {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#yourImage').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+  });
 
 
   // on new-piece drag
@@ -62,11 +65,17 @@ $(function() {
       pieces[id] = newPiece;
       $(this).remove();
     })
+
     //set neighbors
-    for (var k in pieces) {
-      pieces[k].neighbors = pieces;
+
+    for (var k in pieces) { // for every object in pieces
+      for (var kk in pieces) { // for every object in pieces that we want to add to that object.neighbors
+        if (pieces[k] != pieces[kk]) { // if the object is not the piece being iterated through
+          pieces[k].neighbors[kk] = pieces[kk]; // add that object to the
+        }
+      }
     }
-    console.log(pieces)
+
     // place images on load
     for (var cat in pieces) {
       $("body").append("<img src='" + pieces[cat].img + "' class='piece' id='" + pieces[cat].pieceName + "'>");

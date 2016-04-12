@@ -1,3 +1,16 @@
 .piece {
   position:fixed;
 }
+
+body{
+  position:fixed;
+  background-color: black;
+}
+
+
+
+.new-piece, .piece {
+  position:fixed;
+  width: 100px;
+  height: 100px;
+}

@@ -7,7 +7,7 @@ function Piece(pieceName, img, currentPos, relativePos, neighbors) {
 }
 
 Piece.prototype.checkPosition = function() {
-  console.log(this)
+  
   for (var i in this.neighbors){
     // check if position is within 20px of any neighbor
     if (Math.abs((this.neighbors[i].currentPos[0] - this.currentPos[0]) - (this.neighbors[i].relativePos[0] - this.relativePos[0])) < 100
@@ -45,8 +45,11 @@ $(function() {
         if (this.files && this.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
-                $('#yourImage').attr('src', e.target.result);
+                var randomBumber = Math.floor(Math.random() * (1000))
+                $("body").append("<img src=' "+ e.target.result +" ' class='new-piece' id='" + randomBumber + " ' />");
+                $(".new-piece").draggable();
             };
+
             reader.readAsDataURL(this.files[0]);
         }
   });

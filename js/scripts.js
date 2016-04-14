@@ -22,6 +22,9 @@ Piece.prototype.checkPosition = function() {
 }
 
 
+function transparent(input) {
+  $(input).toggleClass("transparency")
+}
 
 
 // // create new Piece objects
@@ -39,6 +42,9 @@ var pieces = {};
 
 
 $(function() {
+  var object = $('#object1');
+  var rotateButton = $('#rotate').val();
+
   //add user images to pieces
   $(":file").change(function () {
         if (this.files && this.files[0]) {
@@ -99,5 +105,34 @@ $(function() {
       }
     });
 
+    // opacity click funtion
+    $('#transparency').click(function(){
+        event.preventDefault();
+    transparent('#object1');
+    });
+
+    // Rotate function
+    var angle = 0;
+    $('#rotate').on('click', function() {
+        angle += 90;
+        $('#object1').rotate(angle);
+    });
+
   });
+});
+
+
+
+
+
+$(document).ready(function() {
+  var object = $('#object1');
+  var rotateButton = $('#rotate').val();
+  event.preventDefault();
+
+
+// opacity click funtion
+$('#transparency').click(function(){
+    event.preventDefault();
+transparent(object);
 });

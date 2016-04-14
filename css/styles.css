@@ -22,3 +22,15 @@ body{
   width: 100px;
   height: 100px;
 }
+
+.rotate {
+    -webkit-transform: translate(100px) rotate(20deg);
+    -webkit-transform-origin: 0 -250px;
+
+    transform: translate(100px) rotate(20deg);
+    transform-origin: 0 -250px;
+}
+
+.transparency {
+  opacity: .4;
+}

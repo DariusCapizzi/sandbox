@@ -1,24 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="css/styles.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-1.12.3.min.js" type="text/javascript"></script>
     <script src="js/jquery-ui.min.js" type="text/javascript"></script>
     <script src="js/scripts.js" type="text/javascript"></script>
-    <title>puzzle</title>
+    <title>Sandbox</title>
+    <style>
+      #mycanvas{border: 2px solid red;}
+    </style>
   </head>
   <body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-md-8"></div>
 
-    <button id="setPiece">blah</button>
-    <img src='img/cat1.jpg' class='new-piece' id='piece1'>
-    <img src='img/cat2.jpg' class='new-piece' id='piece2'>
-    <img src='img/cat3.png' class='new-piece' id='piece3'>
-    <img src='img/cat4.jpeg' class='new-piece' id='piece4'>
+      <div class="page">
+        <canvas id="mycanvas" width="600" height="500"></canvas>
+      </div>
 
+      <div class="sidebar">
+        <h1>Tools</h1>
+        <div class="container">
+          <div class="btn-group-vertical" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" id="rotate"><img src="img/rotate.jpg" alt="Rotate"></button>
+            <button type="button" class="btn btn-default" id="crop"><img src="img/crop.jpg" alt="Crop"></button>
+            <button type="button" class="btn btn-default" id="opacity"><img src="img/opacity.jpg" alt="Opacity"></button>
+            <button type="button" class="btn btn-default" id="draw"><img src="img/draw.jpg" alt="Draw"></button>
+            <button type="button" class="btn btn-default" id="join"><img src="img/join.jpg" alt="Join"></button>
+            <button type="button" class="btn btn-default" id="text"><img src="img/text.jpg" alt="Text"></button>
+          </div>
+        </div>
 
-    <div class="added">
-      <input type="file" id="browseFiles" />
+        <div class="added">
+          <input type="file" id="browseFiles">
+        </div>
+      </div>
     </div>
+  </div>
+  <!-- </div> -->
   </body>
 </html>

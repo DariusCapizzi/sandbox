@@ -1,18 +1,70 @@
-.piece {
+/*.piece {
   position:fixed;
+}*/
+@media (max-width: 400px) {
+  body {
+    background-color: royalblue;
+  }
+  .page {
+    color: white;
+  }
 }
 
-body{
-  position:fixed;
+@media (max-width: 480px) {
+  body {
+    background-color: darkred;
+  }
+}
+
+body {
+  position: fixed;
   background-color: black;
 }
 
+canvas {
+  position: relative;
+  border-color: red;
+  /*border-radius: 5em;*/
+  border-width: thick;
+  background-color: white;
+}
+
+.sidebar {
+  padding-top: 5em;
+  padding-left: 5em;
+}
+
+button {
+  padding-bottom: 0.5em;
+}
+
+.page {
+  display: inline-block;
+  float: right;
+  padding-top: 5em;
+  padding-right: 10em;
+}
+
+h1 {
+  color: blue;
+  padding-left: 0.25em;
+  padding-bottom: 0.25em;
+  font-family: monospace;
+  font-size: 2.25em;
+}
+
+id {
+  display: none;
+}
+
+
+/*
 .added {
   margin-left: 80%;
   margin-top: 30%;
 }
 
-.added img{
+.added img {
   width: 100px;
   height: 100px;
 }
@@ -21,4 +73,4 @@ body{
   position:fixed;
   width: 100px;
   height: 100px;
-}
+}*/

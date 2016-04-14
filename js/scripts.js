@@ -1,103 +1,107 @@
-function Piece(pieceName, img, currentPos, relativePos, neighbors) {
-  this.pieceName = pieceName;
+var canvas = {};
+
+function Pic(img) {
   this.img = img;
-  this.currentPos = currentPos;
-  this.relativePos = relativePos;
-  this.neighbors = {};
+  this.id = Math.floor(Math.random() * 100000);
+  this.position = [];
+  this.width = 0;
+  this.height = 0;
+  this.selected = false;
 }
 
-Piece.prototype.checkPosition = function() {
+$(function () {
+  var selectedPics = [];
+  var newPic = {};
 
-  for (var i in this.neighbors){
-    console.log(this.neighbors[i]);
-    // check if position is within 20px of any neighbor
-    if (Math.abs((this.neighbors[i].currentPos[0] - this.currentPos[0]) - (this.neighbors[i].relativePos[0] - this.relativePos[0])) < 100
-  && Math.abs((this.neighbors[i].currentPos[1] - this.currentPos[1]) - (this.neighbors[i].relativePos[1] - this.relativePos[1])) < 100) {
-      // change position to sit alongside neighbor
-      this.currentPos[0] = this.neighbors[i].currentPos[0] + this.relativePos[0] - this.neighbors[i].relativePos[0];
-      this.currentPos[1] = this.neighbors[i].currentPos[1] + this.relativePos[1] - this.neighbors[i].relativePos[1];
-      console.log("success!");
-    }
-  };
-}
-
-
-
-
-// // create new Piece objects
-// var cat1 = new Piece("cat1", "cat1.jpg", [10,50], [0,0]);
-
-// // set object relations
-// cat1.neighbors = {cat2, cat3};
-
-// set object of Piece objects
-// var pieces = {cat1, cat2, cat3, cat4};
-
-
-
-var pieces = {};
-
-
-$(function() {
   //add user images to pieces
   $(":file").change(function () {
-        if (this.files && this.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var randomBumber = Math.floor(Math.random() * (100000))
-                $("body").append("<img src=' "+ e.target.result +" ' class='new-piece' id='" + randomBumber + " ' />");
-                $(".new-piece").draggable();
-            };
-
-            reader.readAsDataURL(this.files[0]);
-        }
+    if (this.files && this.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        addPic(e.target.result);
+      };
+      reader.readAsDataURL(this.files[0]);
+    }
   });
 
-
-  // on new-piece drag
-  $(".new-piece").draggable();
-
-  //set puzzle
-  $("#setPiece").click(function(){
-
-    //for each new image, make object,
-    $(".new-piece").each(function() {
-      var id = $(this).attr("id");
-      var newPiece = new Piece(id, $(this).attr("src"), [0,0], [parseInt($(this).css("left")), parseInt($(this).css("top"))]);
-      pieces[id] = newPiece;
-      $(this).remove();
+  // join button
+  $("#join").click(function () {
+    console.log(selectedPics)
+    var selectedIds = [];
+    var selectedLeft = [];
+    var selectedTop = [];
+    selectedPics.forEach(function(pic) {
+      selectedIds.push(pic.id);
+      selectedLeft.push(pic.position[0]);
+      selectedTop.push(pic.position[1]);
+    });
+    selectedIds = "#" + selectedIds.join(", #");
+    var sortedLeft = selectedLeft.sort(function (a, b) { return a - b; });
+    var sortedTop = selectedTop.sort(function (a, b) { return a - b; });
+    var rightMostPic = selectedPics[selectedLeft.indexOf(sortedLeft[sortedLeft.length - 1])];
+    var bottomMostPic = selectedPics[selectedTop.indexOf(sortedTop[sortedTop.length - 1])];
+    var newLeft = sortedLeft[0];
+    var newTop = sortedTop[0];
+    console.log(rightMostPic.position[0])
+    console.log(newLeft)
+    console.log(rightMostPic.width)
+    var newWidth = rightMostPic.position[0] - newLeft + rightMostPic.width;
+    var newHeight = bottomMostPic.position[1] - newTop + bottomMostPic.height;
+    // console.log(selectedPics[selectedLeft.indexOf(sortedLeft[selectedLeft.length - 1])]);
+    $(selectedIds).wrapAll("<div class='group pic' />");
+    $(".group").last().css("left", newLeft);
+    $(".group").last().css("top", newTop);
+    $(".group").last().css("width", newWidth);
+    $(".group").last().css("height", newHeight);
+    selectedPics.forEach(function(pic) {
+      pic.position[0] -= newLeft;
+      pic.position[1] -= newTop;
+      $("#" + pic.id).css("left", pic.position[0]);
+      $("#" + pic.id).css("top", pic.position[1]);
+      pic.selected = false;
+      $("#" + pic.id).removeClass("selected");
+      $("#" + pic.id).draggable( "disable" );
     });
 
-    //set neighbors
+    $(".group").click(function() {
+      
+    })
 
-    for (var k in pieces) { // for every object in pieces
-      for (var kk in pieces) { // for every object in pieces that we want to add to that object.neighbors
-        if (pieces[k] != pieces[kk]) { // if the object is not the piece being iterated through
-          pieces[k].neighbors[kk] = pieces[kk]; // add that object to the
+    $(".pic").draggable({
+      drag: function () {
+        newPic.position = [parseInt($(this).css("left")), parseInt($(this).css("top"))];
+      }
+    });
+  });
+
+  function addPic(src) {
+    //add newPic object and add image to document
+    newPic = new Pic(src);
+    $("body").append("<img src='" + newPic.img + "' id='" + newPic.id + "' class='pic' >");
+    newPic.width = $("#" + newPic.id).width();
+    newPic.height = $("#" + newPic.id).height();
+    canvas[newPic.id] = newPic;
+    $(".pic").draggable({
+      drag: function () {
+        newPic.position = [parseInt($(this).css("left")), parseInt($(this).css("top"))];
+      }
+    });
+
+    // select image on click
+    $(".pic").click(function () {
+      console.log("click")
+      $(this).toggleClass("selected");
+      canvas[$(this).attr("id")].selected = !canvas[$(this).attr("id")].selected;
+
+      //update selectedPics{}
+      selectedPics = [];
+      for (var e in canvas) {
+        if (canvas[e].selected) {
+          selectedPics.push(canvas[e]);
         }
       }
-    }
-
-    // place images on load
-    for (var cat in pieces) {
-      $("body").append("<img src='" + pieces[cat].img + "' class='piece' id='" + pieces[cat].pieceName + "'>");
-      $(".piece").last().css("left", pieces[cat].currentPos[0]);
-      $(".piece").last().css("top", pieces[cat].currentPos[1]);
-    }
-
-    // on piece drag
-    $(".piece").draggable({
-      stop: function() {
-        var object = pieces[$(this).attr("id")];
-        object.currentPos = [parseInt($(this).css("left")), parseInt($(this).css("top"))];
-
-        // check if images line up & move image
-          object.checkPosition();
-
-          $(this).css("left", object.currentPos[0]);
-          $(this).css("top", object.currentPos[1]);
-      }
+      console.log(selectedPics)
     });
+  }
 
-  });
 });

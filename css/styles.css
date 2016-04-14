@@ -1,24 +1,12 @@
-.piece {
-  position:fixed;
-}
-
-body{
-  position:fixed;
-  background-color: black;
-}
-
-.added {
-  margin-left: 80%;
-  margin-top: 30%;
-}
-
-.added img{
+.pic {
+  position: absolute;
   width: 100px;
   height: 100px;
 }
-
-.new-piece, .piece {
-  position:fixed;
-  width: 100px;
-  height: 100px;
+.selected {
+  border: 2px dashed blue;
+}
+.group {
+  border: 2px dashed red;
+  padding: 10px;
 }

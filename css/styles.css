@@ -1,0 +1,65 @@
+body {
+  position: fixed;
+  background-image: url(../img/sand.jpg);
+  background-position: center;
+  background-size: cover;
+}
+.pic {
+  position: fixed;
+  z-index: 0;
+  max-width: 700px;
+  max-height: 700px;
+}
+.selected {
+  border: 5px dotted #5cb85c !important;
+}
+.group {
+  border: 1px solid red;
+}
+.sidebar {
+  padding-top: 3em;
+  padding-left: 3em;
+}
+button {
+  padding-bottom: 0.5em;
+}
+.main {
+  display: inline-block;
+  float: right;
+  padding-top: 5em;
+  padding-right: 10em;
+}
+h1 {
+  color: #5cb85c;
+  padding-left: 0.25em;
+  padding-bottom: 0.25em;
+  font-family: monospace;
+  font-size: 2.25em;
+}
+#browseFiles {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  font-size: 200px;
+  cursor: pointer;
+}
+.tooltip.right .tooltip-inner {
+  background-color: #5cb85c;
+}
+.tooltip.right .tooltip-arrow {
+  opacity: 0;
+}
+.toolbar {
+  width: 100px;
+}
+.toolbar img {
+  width: 100%;
+}
+.toolbar button {
+  width: 100%;
+}
+.opacity {
+  opacity: .3;
+}

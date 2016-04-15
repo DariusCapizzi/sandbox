@@ -63,3 +63,8 @@ h1 {
 .opacity {
   opacity: .3;
 }
+
+#title {
+  text-align: right;
+  
+}

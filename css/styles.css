@@ -1,3 +1,7 @@
+body {
+  position: fixed;
+  background-color: black;
+}
 .pic {
   position: fixed;
   z-index: 0;
@@ -5,11 +9,43 @@
   height: 200px;
 }
 .selected {
-  border: 2px dashed blue !important;
+  border: 4px dashed #5cb85c !important;
 }
 .group {
   border: 1px solid red;
 }
-.transparent {
-  opacity: .4;
+.sidebar {
+  padding-top: 5em;
+  padding-left: 5em;
+}
+button {
+  padding-bottom: 0.5em;
+}
+.main {
+  display: inline-block;
+  float: right;
+  padding-top: 5em;
+  padding-right: 10em;
+}
+h1 {
+  color: #5cb85c;
+  padding-left: 0.25em;
+  padding-bottom: 0.25em;
+  font-family: monospace;
+  font-size: 2.25em;
+}
+#browseFiles {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  font-size: 200px;
+  cursor: pointer;
+}
+.tooltip.right .tooltip-inner {
+  background-color: #5cb85c;
+}
+.tooltip.right .tooltip-arrow {
+  opacity: 0;
 }

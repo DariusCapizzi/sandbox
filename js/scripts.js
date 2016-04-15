@@ -10,11 +10,16 @@ function Pic(element) {
   this.height = 0;
   this.opacity = 1;
   this.rotate = 0;
+  this.scale = 1;
+  this.blur = 0;
+  this.sepia = 0;
+  this.invert = 0;
 }
 
 var selectedPics = [];
 
 $(function () {
+  $('[data-toggle="tooltip"]').tooltip();
 
   var newPic = {};
   //add user images to pieces
@@ -46,6 +51,49 @@ $(function () {
     });
   });
 
+  $("#scale-up").click(function () {
+    selectedPics.forEach(function (pic) {
+      pic.scale += .1;
+      drawPic(pic);
+    });
+  });
+  $("#scale-down").click(function () {
+    selectedPics.forEach(function (pic) {
+      pic.scale -= .1;
+      drawPic(pic);
+    });
+  });
+  $("#blur").click(function () {
+    selectedPics.forEach(function (pic) {
+      if (pic.blur === 0) {
+        pic.blur = 5;
+      } else {
+        pic.blur = 0;
+      }
+      drawPic(pic);
+    });
+  });
+  $("#sepia").click(function () {
+    selectedPics.forEach(function (pic) {
+      if (pic.sepia === 0) {
+        pic.sepia = 1;
+      } else {
+        pic.sepia = 0;
+      }
+      drawPic(pic);
+    });
+  });
+  $("#invert").click(function () {
+    selectedPics.forEach(function (pic) {
+      if (pic.invert === 0) {
+        pic.invert = 1;
+      } else {
+        pic.invert = 0;
+      }
+      drawPic(pic);
+    });
+  });
+
   function addPic(element) {
     //add newPic object and add image to document
     var newPic = new Pic(element);
@@ -70,8 +118,10 @@ $(function () {
 
     // sets opacity based on newPic
     $("#" + newPic.id).css("opacity", newPic.opacity);
-    // sets rotation based on newPic
-    $("#" + newPic.id).css("transform", "rotate(" + newPic.rotate + "deg)");
+    // sets rotation and scale based on newPic
+    $("#" + newPic.id).css("transform", "rotate(" + newPic.rotate + "deg) scale(" + newPic.scale + ")");
+    // sets blur, sepia, invert
+    $("#" + newPic.id).css("filter", "blur(" + newPic.blur + "px) sepia(" + newPic.sepia + ") invert(" + newPic.invert + ")");
 
     // sets element to be draggable
     $("#" + newPic.id).draggable({

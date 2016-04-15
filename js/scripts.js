@@ -122,6 +122,7 @@ $(function () {
     $("#" + newPic.id).css("transform", "rotate(" + newPic.rotate + "deg) scale(" + newPic.scale + ")");
     // sets blur, sepia, invert
     $("#" + newPic.id).css("filter", "blur(" + newPic.blur + "px) sepia(" + newPic.sepia + ") invert(" + newPic.invert + ")");
+    $("#" + newPic.id).css("-webkit-filter", "blur(" + newPic.blur + "px) sepia(" + newPic.sepia + ") invert(" + newPic.invert + ")");
 
     // sets element to be draggable
     $("#" + newPic.id).draggable({

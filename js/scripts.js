@@ -5,11 +5,16 @@ function Pic(element) {
   this.id = Math.floor(Math.random() * 100000);
   this.selected = false;
   this.position = [0,0];
-  this.opacity = true;
+  this.width = 0;
+  this.height = 0;
+  this.opacity = 1;
+  this.children = {};
 }
 
 var selectedPics = [];
+
 $(function () {
+
 var newPic = {};
     //add user images to pieces
   $(":file").change(function () {
@@ -23,91 +28,58 @@ var newPic = {};
   });
 
   $("#opacity").click(function() {
-    console.log("hi");
     selectedPics.forEach(function (pic) {
-      // $("#" + pic.id).css("");
-      pic.opacity = !pic.opacity;
+      if (pic.opacity > .2) {
+        pic.opacity = pic.opacity - .1;
+      } else {
+        pic.opacity = 1;
+      }
+      drawPic(pic);
     });
   });
-  // $("#save").click(function() {
-  //   var oldCanvas = canvas;
-  //   canvas = {};
-  //   drawAll();
-  //   $("body").append("<p>saved</p>");
-  //   $("p").last().click(function() {
-  //     canvas = oldCanvas;
-  //     drawAll();
-  //   });
-  // });
-  // // join button
-  // $("#join").click(function () {
-  //   joinPics();
-  // });
-  //
-  // // toggle button
-  // $("#hide").click(function () {
-  //   selectedPics.forEach(function (pic) {
-  //     $("#" + pic.id).css("");
-  //   });
-  // });
-  //
-  // scale slider
-  // $("#scale").on("input", function () {
-  //   console.log("dsdfdf")
-  //   selectedPics.forEach(function (pic) {
-  //     $("#" + pic.id).css("width", $("#scale").val() + "%");
-  //   });
-  // });
-  //
-  // // move forward
-  // $("#forward").click(function () {
-  //   selectedPics.forEach(function (pic) {
-  //     console.log(parseInt($("#" + pic.id).css("z-index")));
-  //     var newZ = parseInt($("#" + pic.id).css("z-index")) + 1;
-  //     $("#" + pic.id).css("z-index", newZ);
-  //   });
-  // });
-  //
-  // // move backward
-  // $("#backward").click(function () {
-  //   selectedPics.forEach(function (pic) {
-  //     var newZ = parseInt($("#" + pic.id).css("z-index")) - 1;
-  //     $("#" + pic.id).css("z-index", newZ);
-  //   });
-  // });
 
 
 function addPic(element) {
   //add newPic object and add image to document
   var newPic = new Pic(element);
   canvas[newPic.id] = newPic;
-  drawPic(canvas[newPic.id]);
+  drawPic(newPic);
 }
 
 function drawPic(newPic) {
+  console.log(newPic)
+  $("#" + newPic.id).remove();
+
+  // make and set html attributes based on newPic
   $(".main").append(newPic.element);
   $(".pic").last().attr("id", newPic.id);
-  $(".pic").last().attr("left", newPic.position[0]);
-  $(".pic").last().attr("top", newPic.position[1]);
-  if(newPic.opacity) {
-  $(".pic").last().addClass(".transparent");
-} else {
-  $(".pic").last().removeClass(".transparent");
-}
+  $("#" + newPic.id).css("left", newPic.position[0]);
+  $("#" + newPic.id).css("top", newPic.position[1]);
+  //set selected
+  if (newPic.selected) {
+    $("#" + newPic.id).addClass("selected");
+  } else {
+    $("#" + newPic.id).removeClass("selected");
+  }
 
+  // sets opacity based on newPic
+  $("#" + newPic.id).css("opacity", newPic.opacity)
 
-  $(".pic").last().draggable({
+  // sets element to be draggable
+  $("#" + newPic.id).draggable({
     drag: function () {
       newPic.position = [parseInt($(this).css("left")), parseInt($(this).css("top"))];
     }
   });
-  // select image on click
-  $(".pic").last().on("click", function () {
+
+  // add to selected on click
+  $("#" + newPic.id).on("click", function () {
     $(this).toggleClass("selected");
-    canvas[$(this).attr("id")].selected = !canvas[$(this).attr("id")].selected;
+    newPic.selected = !newPic.selected;
     updateSelectedPics();
   });
 }
+
 function drawAll() {
   $(".main").empty();
   for (var pic in canvas) {
@@ -115,6 +87,7 @@ function drawAll() {
     drawPic(pic);
   }
 }
+
 function joinPics() {
   console.log(selectedPics);
   var selectedIds = [];

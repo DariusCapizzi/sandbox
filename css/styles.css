@@ -1,12 +1,15 @@
 .pic {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  z-index: 0;
+  width: 200px;
+  height: 200px;
 }
 .selected {
-  border: 2px dashed blue;
+  border: 2px dashed blue !important;
 }
 .group {
-  border: 2px dashed red;
-  padding: 10px;
+  border: 1px solid red;
+}
+.transparent {
+  opacity: .4;
 }

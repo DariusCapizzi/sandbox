@@ -4,7 +4,7 @@ function Pic(element) {
   this.element = element;
   this.id = Math.floor(Math.random() * 100000);
   this.selected = false;
-  this.position = [0, 0];
+  this.position = [300, 100];
   this.children = {};
   this.width = 0;
   this.height = 0;

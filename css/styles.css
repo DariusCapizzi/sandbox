@@ -1,22 +1,24 @@
 body {
   position: fixed;
-  background-color: black;
+  background-image: url(../img/sand.jpg);
+  background-position: center;
+  background-size: cover;
 }
 .pic {
   position: fixed;
   z-index: 0;
-  width: 200px;
-  height: 200px;
+  max-width: 700px;
+  max-height: 700px;
 }
 .selected {
-  border: 4px dashed #5cb85c !important;
+  border: 5px dotted #5cb85c !important;
 }
 .group {
   border: 1px solid red;
 }
 .sidebar {
-  padding-top: 5em;
-  padding-left: 5em;
+  padding-top: 3em;
+  padding-left: 3em;
 }
 button {
   padding-bottom: 0.5em;
@@ -48,4 +50,16 @@ h1 {
 }
 .tooltip.right .tooltip-arrow {
   opacity: 0;
+}
+.toolbar {
+  width: 100px;
+}
+.toolbar img {
+  width: 100%;
+}
+.toolbar button {
+  width: 100%;
+}
+.opacity {
+  opacity: .3;
 }

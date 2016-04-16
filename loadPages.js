@@ -30,6 +30,7 @@ function loadPage(req, res){
     ".css": "text/css",
     ".txt": "text/plain",
     ".jpg": "image/jpeg",
+		".jpeg": "image/jpeg",
     ".gif": "image/gif",
     ".png": "image/png"
   };
@@ -48,8 +49,8 @@ function loadPage(req, res){
       }
     });
   } else {
-    console.log(filename)
-    console.log("Invalid file extension detected: " + ext)
+    // console.log(filename)
+    console.log("Invalid file type: " + ext)
   }
 }
 

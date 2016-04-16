@@ -4,7 +4,8 @@
 
 var port = 8080;
 var serverUrl = "127.0.0.1";
-
+// 127.0.0.1  local
+// 192.168.0.17 home wifi
 
  http = require("http");
  path = require("path");
@@ -17,26 +18,81 @@ console.log("Starting web server at " + serverUrl + ":" + port);
 
 http.createServer( function(req, res) {
 
+
+  //if POST
   if (req.method.toLowerCase() === "post"){
-    console.log(req.url);
+
+    //TODO if image and if object (look at headers)
+    //TODO move saveObject from master
+    console.log("the first POST'ed file is: " + req.url);
+
+
+
+
+    //store images
+    // res.setHeader("Content-type", "image/jpeg")
+
+
+    // res.setEncoding('binary')
+
+    var imagedata = '';
+    //TODO --saved image looks different than incoming data. saved image as text? unencode from base64?
     req.on("data", function(postBody){
-      res.setHeader("Content-type", "application/json")
-      
-      var inObjt = JSON.parse(postBody.toString());
-      console.log(typeof objt)
+      imagedata = imagedata + postBody;
 
+      var decodedImage = new Buffer(imagedata, 'base64').toString('binary');
 
-      var outObjt = JSON.stringify(inObjt)
-      // console.log(typeof objt2)
+      console.log(decodedImage)
+      fs.writeFile("imageData.jpeg", decodedImage, function(err){
+            if (err){ throw err }
+            // var decodedImage = new Buffer(base64Image, 'base64');
 
-
-
-
-      res.end(outObjt)
+            res.end("Saved Image")
+      })
     })
 
+
+
+
+
+
+
+
+  //if GET
   } else {
-    // console.log(req.method);
-    loadPages.doit(req, res);
+      // console.log(req.method); // are there other methods I should be aware of?
+
+    if (req.url.charAt(1) === "0" ){
+
+
+      //TODO load image/object from file.
+      // req.on("data", function(postBody){ postBody.toString()} // // do i need this?
+
+
+
+      fs.readFile('imageData.txt',function(err, data){
+        if (err){ throw err };
+
+        res.setHeader("Content-type", "image/jpeg")
+        // console.log(typeof data.toString());
+        res.end(data.toString())
+      })
+
+
+
+
+
+
+      // res.setHeader("Content-type", "image/jpeg")
+      // res.end("hey")
+
+
+
+
+    } else {
+      // console.log(__dirname + req.url)
+      loadPages.doit(req, res);
+    }
   }
+
 }).listen(port, serverUrl);
